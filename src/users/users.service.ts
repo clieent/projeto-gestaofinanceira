@@ -14,6 +14,7 @@ export class UsersService {
             email: createUserDto?.email ?? '',
             phone: createUserDto?.phone ?? '',
             cpf: createUserDto?.cpf ?? '',
+            password: createUserDto?.password ?? '',
         })
         console.log(createUserDto)
         if (!user) {
@@ -27,7 +28,7 @@ export class UsersService {
     }
 
     async findOne(id: string) {
-        return `This action returns a #${id} user`
+        return await this.users.findById(id).exec()
     }
 
     async update(id: string, updateUserDto) {
