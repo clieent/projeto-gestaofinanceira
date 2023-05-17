@@ -8,7 +8,7 @@ export class AuthController {
   constructor(private readonly authService: AuthService) {}
   @UseGuards(AuthGuard('local'))
   @Post('login')
-  async login(@Req() req: any){
-    return await this.authService.login(req.user)
+  async login(@Body() req:{email: string, password: string} ){
+    return await this.authService.validateUser(req.email, req.password)
   }
 }

@@ -8,7 +8,7 @@ import { MenssagesHelper } from 'src/helpers/menssage.helper';
 export class LocalStrategy extends PassportStrategy(Strategy){
     constructor(private readonly authService: AuthService){
         super({
-            usernameFild: 'email'
+            usernameField: 'email'
         })
     }
 

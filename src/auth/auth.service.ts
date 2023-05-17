@@ -1,34 +1,39 @@
-import { Injectable } from '@nestjs/common';
-import { UsersService } from 'src/users/users.service';
-import { compare, compareSync } from 'bcrypt'
-import { JwtService } from '@nestjs/jwt';
+import { Injectable } from '@nestjs/common'
+import { UsersService } from 'src/users/users.service'
+import { compareSync } from 'bcrypt'
+import { JwtService } from '@nestjs/jwt'
 
 @Injectable()
 export class AuthService {
-constructor (private readonly userService: UsersService, private readonly jwtService: JwtService){}
+    constructor(
+        private readonly userService: UsersService,
+        private jwtService: JwtService
+    ) {}
 
-async login(user){
-  const payload = {sub: user.id, email: user.email}
+     login(user) {
+        const payload = { sub: user.id, email: user.email }
 
-  return {
-    token: this.jwtService.sign(payload)
-  }
-}
+        return {
+            token: this.jwtService.sign(payload),
+        }
+    }
 
-async validateUser(email: string, password: string){
-  let user
-  try {
-    user = await this.userService.findOneByEmail(email)
-  } catch (error) {
-    return null
-  } 
-  const isPasswordValid = compareSync(password, user.password )
+    async validateUser(email: string, password: string) {
+        const user = await this.userService
+            .findOneByEmail(email)
+            .then((data) => {
+                return data
+            })
+            .catch((error) => {
+                console.log(error)
+                return null
+            })
+        const isPasswordValid = compareSync(password, user.password)
 
-  if(!isPasswordValid){
-    return null
-  }
+        if (!isPasswordValid) {
+            return null
+        }
 
-  return user
-}
-  
+        return this.login(user)
+    }
 }

@@ -34,7 +34,7 @@ export class UsersService {
     }
 
     async findOneByEmail(email: string){
-        return await this.users.findById(email).exec()
+        return await this.users.findOne({email}).exec()
     }
 
     async update(id: string, updateUserDto) {
