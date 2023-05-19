@@ -17,7 +17,7 @@ export class User {
     @Prop({ required: true })
     cpf: string
 
-    @Prop({ required: true })
+    @Prop({})
     password: string
 
     @Prop({ defult: null, type: Date })
