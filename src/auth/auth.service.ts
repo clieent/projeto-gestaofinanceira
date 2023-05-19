@@ -10,13 +10,15 @@ export class AuthService {
         private jwtService: JwtService
     ) {}
 
-     login(user) {
-        const payload = { sub: user.id, email: user.email }
+    // async login(user) {
+    //     const user = await this.userService
+    //     .findOneByEmail(email)
+    //     const payload = { sub: user.id, email: user.email }
 
-        return {
-            token: this.jwtService.sign(payload),
-        }
-    }
+    //     return {
+    //         token: this.jwtService.sign(payload),
+    //     }
+    // }
 
     async validateUser(email: string, password: string) {
         const user = await this.userService
@@ -31,9 +33,19 @@ export class AuthService {
         const isPasswordValid = compareSync(password, user.password)
 
         if (!isPasswordValid) {
-            return null
+            return {
+                status: 500,
+                data: 'Senha e/ou email invalido',
+            }
         }
+        delete user.password
+        const payload = { sub: user.id, email: user.email }
+        user.token = this.jwtService.sign(payload)
 
-        return this.login(user)
+        return {
+            status: 201,
+            response: user,
+            data: user.token,
+        }
     }
 }
