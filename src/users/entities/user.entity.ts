@@ -17,8 +17,10 @@ export class User {
     @Prop({ required: true })
     cpf: string
 
-    @Prop({})
+    @Prop({ required: true })
     password: string
+
+    token: string
 
     @Prop({ defult: null, type: Date })
     deleted_at

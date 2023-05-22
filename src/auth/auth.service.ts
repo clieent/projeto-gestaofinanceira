@@ -21,15 +21,14 @@ export class AuthService {
     // }
 
     async validateUser(email: string, password: string) {
-        const user = await this.userService
-            .findOneByEmail(email)
-            .then((data) => {
-                return data
-            })
-            .catch((error) => {
-                console.log(error)
-                return null
-            })
+        const user = (await this.userService.findOneByEmail(email)).toObject()
+        if (!user) {
+            return {
+                status: 404,
+                data: null,
+            }
+        }
+
         const isPasswordValid = compareSync(password, user.password)
 
         if (!isPasswordValid) {
@@ -44,8 +43,9 @@ export class AuthService {
 
         return {
             status: 201,
-            response: user,
-            data: user.token,
+            data: {
+                user: user,
+            },
         }
     }
 }

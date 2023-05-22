@@ -4,7 +4,7 @@ import { UpdateUserDto } from './dto/update-user.dto'
 import mongoose, { Model } from 'mongoose'
 import { InjectModel } from '@nestjs/mongoose'
 import { User } from './entities/user.entity'
-import {hash} from 'bcrypt'
+import { hash } from 'bcrypt'
 
 @Injectable()
 export class UsersService {
@@ -33,8 +33,23 @@ export class UsersService {
         return await this.users.findById(id).exec()
     }
 
-    async findOneByEmail(email: string){
-        return await this.users.findOne({email}).exec()
+    async findOneByEmail(email: string) {
+        const user = await this.users
+            .findOne({ email })
+            .then((data) => {
+                return {
+                    status: 200,
+                    data,
+                }
+            })
+            .catch((error) => {
+                console.log(error)
+                return {
+                    status: 404,
+                    data: null,
+                }
+            })
+        return user.data
     }
 
     async update(id: string, updateUserDto) {
