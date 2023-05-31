@@ -25,8 +25,9 @@ export class CategoriesService {
             })
     }
 
-    async findAll() {
-        return await this.categories.find().populate('user_id').exec()
+    async findAll(user_id: string) {
+        console.log(user_id)
+        return await this.categories.find({ user_id }).exec()
     }
 
     findOne(id: number) {
