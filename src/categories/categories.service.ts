@@ -14,10 +14,11 @@ export class CategoriesService {
         return this.categories
             .create(createCategoryDto)
             .then(async (category) => {
-                const catPop = await category.populate('users')
                 return {
-                    category,
-                    catPop,
+                    status: 201,
+                    data: {
+                        categories: category,
+                    },
                 }
             })
             .catch(() => {
@@ -38,7 +39,7 @@ export class CategoriesService {
         return `This action updates a #${id} category`
     }
 
-    remove(id: number) {
-        return `This action removes a #${id} category`
+    remove(id: string) {
+        return this.categories.findByIdAndRemove(id)
     }
 }
