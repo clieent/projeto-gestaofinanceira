@@ -1,34 +1,46 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
-import { CashFlowsService } from './cash-flows.service';
-import { CreateCashFlowDto } from './dto/create-cash-flow.dto';
-import { UpdateCashFlowDto } from './dto/update-cash-flow.dto';
+import {
+    Controller,
+    Get,
+    Post,
+    Body,
+    Patch,
+    Param,
+    Delete,
+    Query,
+} from '@nestjs/common'
+import { CashFlowsService } from './cash-flows.service'
+import { CreateCashFlowDto } from './dto/create-cash-flow.dto'
+import { UpdateCashFlowDto } from './dto/update-cash-flow.dto'
 
 @Controller('cash-flows')
 export class CashFlowsController {
-  constructor(private readonly cashFlowsService: CashFlowsService) {}
+    constructor(private readonly cashFlowsService: CashFlowsService) {}
 
-  @Post()
-  create(@Body() createCashFlowDto: CreateCashFlowDto) {
-    return this.cashFlowsService.create(createCashFlowDto);
-  }
+    @Post()
+    create(@Body() createCashFlowDto: CreateCashFlowDto) {
+        return this.cashFlowsService.create(createCashFlowDto)
+    }
 
-  @Get()
-  findAll() {
-    return this.cashFlowsService.findAll();
-  }
+    @Get()
+    findAll(@Query('userId') userId: string) {
+        return this.cashFlowsService.findAll(userId)
+    }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.cashFlowsService.findOne(+id);
-  }
+    @Get(':id')
+    findOne(@Param('id') id: string) {
+        return this.cashFlowsService.findOne(+id)
+    }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateCashFlowDto: UpdateCashFlowDto) {
-    return this.cashFlowsService.update(+id, updateCashFlowDto);
-  }
+    @Patch(':id')
+    update(
+        @Param('id') id: string,
+        @Body() updateCashFlowDto: UpdateCashFlowDto
+    ) {
+        return this.cashFlowsService.update(+id, updateCashFlowDto)
+    }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.cashFlowsService.remove(+id);
-  }
+    @Delete(':id')
+    remove(@Param('id') id: string) {
+        return this.cashFlowsService.remove(+id)
+    }
 }
