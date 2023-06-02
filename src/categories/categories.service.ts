@@ -10,24 +10,18 @@ export class CategoriesService {
     constructor(
         @InjectModel('categories') private readonly categories: Model<ICategory>
     ) {}
-    async create(createCategoryDto: CreateCategoryDto) {
-        return this.categories
-            .create(createCategoryDto)
-            .then(async (category) => {
-                return {
-                    status: 201,
-                    data: {
-                        categories: category,
-                    },
-                }
-            })
-            .catch(() => {
-                return null
-            })
+    async create(createCategoryDto) {
+        const category = await this.categories.create({
+            title: createCategoryDto?.title ?? '',
+            user_id: createCategoryDto?.user_id ?? '',
+        })
+        if (!category) {
+            console.log('Erro ao cirar categoria')
+        }
+        return category
     }
 
     async findAll(user_id: string) {
-        console.log(user_id)
         return await this.categories.find({ user_id }).exec()
     }
 

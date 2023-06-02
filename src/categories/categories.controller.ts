@@ -41,7 +41,6 @@ export class CategoriesController {
 
     @Delete(':id')
     remove(@Param('id') id: string) {
-        console.log(id)
         return this.categoriesService.remove(id)
     }
 }
