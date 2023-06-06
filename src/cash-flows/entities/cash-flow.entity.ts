@@ -12,10 +12,10 @@ export class CashFlow {
     description: string
 
     @Prop({ required: true })
-    value: number
+    value: string
 
     @Prop({ required: true })
-    dueDate: Date
+    dueDate: string
 
     @Prop({ required: true })
     type: boolean

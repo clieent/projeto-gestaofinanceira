@@ -4,12 +4,12 @@ import { UpdateCashFlowDto } from './dto/update-cash-flow.dto'
 import { InjectModel } from '@nestjs/mongoose'
 import { ICashFlow } from './entities/cash-flow.entity'
 import { Model } from 'mongoose'
-import { HttpException, HttpStatus } from '@nestjs/common'
+import { HttpStatus } from '@nestjs/common'
 
 @Injectable()
 export class CashFlowsService {
     constructor(
-        @InjectModel('categories') private readonly cashFlows: Model<ICashFlow>
+        @InjectModel('cashFlows') private readonly cashFlows: Model<ICashFlow>
     ) {}
     async create(createCashFlowDto: CreateCashFlowDto) {
         const cashFlow = await this.cashFlows
@@ -41,7 +41,7 @@ export class CashFlowsService {
         return `This action updates a #${id} cashFlow`
     }
 
-    remove(id: number) {
-        return `This action removes a #${id} cashFlow`
+    remove(id: string) {
+        return this.cashFlows.findByIdAndDelete(id)
     }
 }

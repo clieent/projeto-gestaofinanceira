@@ -41,6 +41,6 @@ export class CashFlowsController {
 
     @Delete(':id')
     remove(@Param('id') id: string) {
-        return this.cashFlowsService.remove(+id)
+        return this.cashFlowsService.remove(id)
     }
 }

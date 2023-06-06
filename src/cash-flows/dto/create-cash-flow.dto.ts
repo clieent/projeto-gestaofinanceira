@@ -9,10 +9,10 @@ export class CreateCashFlowDto {
     description?: string
 
     @IsNotEmpty({ message: 'valor obrigatorio' })
-    value: number
+    value: string
 
     @IsNotEmpty({ message: 'data obrigatorio' })
-    dueDate: Date
+    dueDate: string
 
     @IsNotEmpty({ message: 'tipo obrigatorio' })
     type: boolean
