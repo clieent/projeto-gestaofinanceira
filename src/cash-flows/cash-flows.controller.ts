@@ -7,6 +7,7 @@ import {
     Param,
     Delete,
     Query,
+    Res,
 } from '@nestjs/common'
 import { CashFlowsService } from './cash-flows.service'
 import { CreateCashFlowDto } from './dto/create-cash-flow.dto'
@@ -23,7 +24,7 @@ export class CashFlowsController {
     }
 
     @Get(':userId')
-    async findAll(@Param('userId') userId: string, res: Response) {
+    async findAll(@Param('userId') userId: string, @Res() res: Response) {
         const { status, data } = await this.cashFlowsService.findAll(userId)
         res.status(status).send(data).end()
     }
