@@ -11,6 +11,7 @@ import {
 import { CashFlowsService } from './cash-flows.service'
 import { CreateCashFlowDto } from './dto/create-cash-flow.dto'
 import { UpdateCashFlowDto } from './dto/update-cash-flow.dto'
+import { Response } from 'express'
 
 @Controller('cash-flows')
 export class CashFlowsController {
@@ -21,9 +22,10 @@ export class CashFlowsController {
         return this.cashFlowsService.create(createCashFlowDto)
     }
 
-    @Get()
-    findAll(@Query('userId') userId: string) {
-        return this.cashFlowsService.findAll(userId)
+    @Get(':userId')
+    async findAll(@Param('userId') userId: string, res: Response) {
+        const { status, data } = await this.cashFlowsService.findAll(userId)
+        res.status(status).send(data).end()
     }
 
     @Get(':id')

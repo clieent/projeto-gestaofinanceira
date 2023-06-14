@@ -30,7 +30,22 @@ export class CashFlowsService {
     }
 
     async findAll(user_id: string) {
-        return await this.cashFlows.find({ user_id }).exec()
+        return await this.cashFlows
+            .find({ user_id })
+            .exec()
+            .then((data) => {
+                return {
+                    status: 200,
+                    data,
+                }
+            })
+            .catch((error) => {
+                console.log(error)
+                return {
+                    status: 404,
+                    data: null,
+                }
+            })
     }
 
     findOne(id: number) {
