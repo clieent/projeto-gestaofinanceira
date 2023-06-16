@@ -14,13 +14,14 @@ import { CreateCashFlowDto } from './dto/create-cash-flow.dto'
 import { UpdateCashFlowDto } from './dto/update-cash-flow.dto'
 import { Response } from 'express'
 
-@Controller('cash-flows')
+@Controller('cashFlows')
 export class CashFlowsController {
     constructor(private readonly cashFlowsService: CashFlowsService) {}
 
     @Post()
-    create(@Body() createCashFlowDto: CreateCashFlowDto) {
-        return this.cashFlowsService.create(createCashFlowDto)
+    async create(@Body() createCashFlowDto: CreateCashFlowDto, @Res() res:Response) {
+        const {status, data}= await this.cashFlowsService.create(createCashFlowDto)
+        res.status(status).send(data).end()
     }
 
     @Get(':userId')
@@ -43,7 +44,8 @@ export class CashFlowsController {
     }
 
     @Delete(':id')
-    remove(@Param('id') id: string) {
-        return this.cashFlowsService.remove(id)
+   async remove(@Param('id') id: string, @Res() res: Response) {
+        const {status, data} = await this.cashFlowsService.remove(id)
+        res.status(status).send(data).end()
     }
 }

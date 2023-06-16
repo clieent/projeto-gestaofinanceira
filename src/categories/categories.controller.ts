@@ -7,23 +7,32 @@ import {
     Param,
     Delete,
     Query,
+    Res,
 } from '@nestjs/common'
 import { CategoriesService } from './categories.service'
 import { CreateCategoryDto } from './dto/create-category.dto'
 import { UpdateCategoryDto } from './dto/update-category.dto'
+import { Response } from 'express'
 
 @Controller('categories')
 export class CategoriesController {
     constructor(private readonly categoriesService: CategoriesService) {}
 
     @Post()
-    create(@Body() createCategoryDto: CreateCategoryDto) {
-        return this.categoriesService.create(createCategoryDto)
+    async create(
+        @Body() createCategoryDto: CreateCategoryDto,
+        @Res() res: Response
+    ) {
+        const { status, data } = await this.categoriesService.create(
+            createCategoryDto
+        )
+        res.status(status).send(data).end()
     }
 
     @Get()
-    findAll(@Query('userId') userId: string) {
-        return this.categoriesService.findAll(userId)
+    async findAll(@Query('userId') userId: string, @Res() res: Response) {
+        const { status, data } = await this.categoriesService.findAll(userId)
+        res.status(status).send(data).end()
     }
 
     @Get(':id')
@@ -40,7 +49,8 @@ export class CategoriesController {
     }
 
     @Delete(':id')
-    remove(@Param('id') id: string) {
-        return this.categoriesService.remove(id)
+   async remove(@Param('id') id: string, @Res() res: Response) {
+        const {status, data} = await this.categoriesService.remove(id)
+        res.status(status).send(data).end()
     }
 }
