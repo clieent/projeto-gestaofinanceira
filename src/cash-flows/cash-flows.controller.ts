@@ -24,7 +24,7 @@ export class CashFlowsController {
         res.status(status).send(data).end()
     }
 
-    @Get(':userId')
+    @Get(':userId/users')
     async findAll(@Param('userId') userId: string, @Res() res: Response) {
         const { status, data } = await this.cashFlowsService.findAll(userId)
         res.status(status).send(data).end()
