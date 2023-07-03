@@ -19,8 +19,13 @@ export class CashFlowsController {
     constructor(private readonly cashFlowsService: CashFlowsService) {}
 
     @Post()
-    async create(@Body() createCashFlowDto: CreateCashFlowDto, @Res() res:Response) {
-        const {status, data}= await this.cashFlowsService.create(createCashFlowDto)
+    async create(
+        @Body() createCashFlowDto: CreateCashFlowDto,
+        @Res() res: Response
+    ) {
+        const { status, data } = await this.cashFlowsService.create(
+            createCashFlowDto
+        )
         res.status(status).send(data).end()
     }
 
@@ -44,8 +49,8 @@ export class CashFlowsController {
     }
 
     @Delete(':id')
-   async remove(@Param('id') id: string, @Res() res: Response) {
-        const {status, data} = await this.cashFlowsService.remove(id)
+    async remove(@Param('id') id: string, @Res() res: Response) {
+        const { status, data } = await this.cashFlowsService.remove(id)
         res.status(status).send(data).end()
     }
 }

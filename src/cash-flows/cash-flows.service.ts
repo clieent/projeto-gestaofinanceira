@@ -32,6 +32,7 @@ export class CashFlowsService {
     async findAll(user_id: string) {
         return await this.cashFlows
             .find({ user_id })
+            .populate('category_id', { title: true })
             .exec()
             .then((data) => {
                 return {
@@ -56,16 +57,19 @@ export class CashFlowsService {
     }
 
     remove(id: string) {
-        return this.cashFlows.findByIdAndDelete(id).then((data)=>{
-            return {
-                status: HttpStatus.OK,
-                data,
-            }
-        }).catch((error)=> {
-            return {
-                status: HttpStatus.UNPROCESSABLE_ENTITY,
-                data: error,
-            }
-        })
+        return this.cashFlows
+            .findByIdAndDelete(id)
+            .then((data) => {
+                return {
+                    status: HttpStatus.OK,
+                    data,
+                }
+            })
+            .catch((error) => {
+                return {
+                    status: HttpStatus.UNPROCESSABLE_ENTITY,
+                    data: error,
+                }
+            })
     }
 }
