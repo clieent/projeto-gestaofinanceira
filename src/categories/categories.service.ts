@@ -46,8 +46,8 @@ export class CategoriesService {
         return `This action returns a #${id} category`
     }
 
-    update(id: number, updateCategoryDto: UpdateCategoryDto) {
-        return `This action updates a #${id} category`
+   async update(id: string, updateCategoryDto: UpdateCategoryDto) {
+        await this.categories.findByIdAndUpdate(id, updateCategoryDto).exec()
     }
 
     remove(id: string) {
