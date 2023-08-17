@@ -37,15 +37,17 @@ export class CategoriesController {
 
     @Get(':id')
     findOne(@Param('id') id: string) {
-        return this.categoriesService.findOne(+id)
+        return this.categoriesService.findOne(id)
     }
 
     @Patch(':id')
-    update(
+    async update(
         @Param('id') id: string,
-        @Body() updateCategoryDto: UpdateCategoryDto
+        @Body() updateCategoryDto: UpdateCategoryDto,
+        @Res() res: Response
     ) {
-        return this.categoriesService.update(+id, updateCategoryDto)
+        const {data, status} = await this.categoriesService.update(id, updateCategoryDto)
+        res.status(status).send(data).end()
     }
 
     @Delete(':id')

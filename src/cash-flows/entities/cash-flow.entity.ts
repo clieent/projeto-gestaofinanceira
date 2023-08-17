@@ -20,13 +20,16 @@ export class CashFlow {
     @Prop({ required: true })
     type: boolean
 
+    @Prop({ default: false })
+    paid: boolean
+
     @Prop({ required: true, ref: 'users' })
     user_id: schema.Types.ObjectId
 
     @Prop({ required: true, ref: 'categories' })
     category_id: schema.Types.ObjectId
 
-    @Prop({ defult: null, type: Date })
+    @Prop({ default: null, type: Date })
     deleted_at
 }
 

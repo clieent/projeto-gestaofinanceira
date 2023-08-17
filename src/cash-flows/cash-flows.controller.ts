@@ -45,7 +45,7 @@ export class CashFlowsController {
         @Param('id') id: string,
         @Body() updateCashFlowDto: UpdateCashFlowDto
     ) {
-        return this.cashFlowsService.update(+id, updateCashFlowDto)
+        return this.cashFlowsService.update(updateCashFlowDto)
     }
 
     @Delete(':id')

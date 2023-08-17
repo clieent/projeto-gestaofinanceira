@@ -42,12 +42,25 @@ export class CategoriesService {
         })
     }
 
-    findOne(id: number) {
+    findOne(id: string) {
         return `This action returns a #${id} category`
     }
 
-    update(id: number, updateCategoryDto: UpdateCategoryDto) {
-        return `This action updates a #${id} category`
+    async update(id: string, updateCategoryDto: UpdateCategoryDto) {
+        console.log(updateCategoryDto)
+        const category = await this.categories.findByIdAndUpdate(id, updateCategoryDto, {new: true}).then((category) => {
+            return {
+                data: category,
+                status: HttpStatus.CREATED
+            }
+        }).catch((error) => {
+            console.log(error)
+            return {
+                data: null,
+                status: HttpStatus.BAD_REQUEST
+            }
+        })
+        return category
     }
 
     remove(id: string) {

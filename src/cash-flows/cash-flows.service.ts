@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common'
 import { CreateCashFlowDto } from './dto/create-cash-flow.dto'
 import { UpdateCashFlowDto } from './dto/update-cash-flow.dto'
 import { InjectModel } from '@nestjs/mongoose'
-import { ICashFlow } from './entities/cash-flow.entity'
+import { CashFlow, ICashFlow } from './entities/cash-flow.entity'
 import { Model } from 'mongoose'
 import { HttpStatus } from '@nestjs/common'
 
@@ -48,13 +48,29 @@ export class CashFlowsService {
             })
     }
 
-    findOne(id: number) {
+    findOne(id: any) {
         return `This action returns a #${id} cashFlow`
     }
 
-    update(id: number, updateCashFlowDto: UpdateCashFlowDto) {
-        return `This action updates a #${id} cashFlow`
-    }
+    async update(updateCashFlowDto: UpdateCashFlowDto) {
+        const cashFlows = await this.cashFlows
+            .updateMany({_id: { $in: updateCashFlowDto}}, { $set: { paid: true }})
+            .then((cashFlows) => {
+                return {
+                    data: cashFlows,
+                    status: HttpStatus.OK,
+                }
+            }).catch((error) => {
+                console.log(error)
+                return {
+                    status: HttpStatus.BAD_REQUEST,
+                    data: null,
+                }
+            })
+            return cashFlows
+        }
+
+
 
     remove(id: string) {
         return this.cashFlows
