@@ -13,6 +13,9 @@ export class CashFlow {
 
     @Prop({ required: true })
     value: string
+    
+    @Prop({ required: true })
+    parcel: number | null
 
     @Prop({ required: true })
     dueDate: string
