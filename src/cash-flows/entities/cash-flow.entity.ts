@@ -14,8 +14,8 @@ export class CashFlow {
     @Prop({ required: true })
     value: string
     
-    @Prop({ required: true })
-    parcel: number | null
+    @Prop({ default: true })
+    installment: number
 
     @Prop({ required: true })
     dueDate: string
@@ -31,6 +31,9 @@ export class CashFlow {
 
     @Prop({ required: true, ref: 'categories' })
     category_id: schema.Types.ObjectId
+
+    @Prop({ required: true, ref: 'banks' })
+    banks_id: schema.Types.ObjectId
 
     @Prop({ default: null, type: Date })
     deleted_at

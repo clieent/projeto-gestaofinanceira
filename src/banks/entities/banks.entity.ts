@@ -1,10 +1,10 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose'
 import { Schema as schema, Document } from 'mongoose'
 
-export type ICategory = Category & Document
+export type IBanks = Banks & Document
 
-@Schema({ timestamps: true, collection: 'categories' })
-export class Category {
+@Schema({ timestamps: true, collection: 'banks' })
+export class Banks {
     @Prop({ required: true })
     title: string
 
@@ -15,4 +15,4 @@ export class Category {
     deleted_at
 }
 
-export const CategorySchema = SchemaFactory.createForClass(Category)
+export const BanksSchema = SchemaFactory.createForClass(Banks)

@@ -23,7 +23,7 @@ export class CategoriesService {
             }
         })
         if (!category) {
-            console.log('Erro ao cirar categoria')
+            console.log('Erro ao criar categoria')
         }
         return category
     }

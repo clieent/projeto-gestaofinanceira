@@ -7,9 +7,10 @@ import { ConfigModule } from '@nestjs/config';
 import { AuthModule } from './auth/auth.module';
 import { CashFlowsModule } from './cash-flows/cash-flows.module';
 import { CategoriesModule } from './categories/categories.module';
+import { BanksModule } from './banks/banks.module';
 
 @Module({
-  imports: [ConfigModule.forRoot(), MongooseModule.forRoot(process.env.DATABASE_CONNECT), UsersModule, AuthModule, CashFlowsModule, CategoriesModule],
+  imports: [ConfigModule.forRoot(), MongooseModule.forRoot(process.env.DATABASE_CONNECT), UsersModule, AuthModule, CashFlowsModule, CategoriesModule, BanksModule],
   controllers: [AppController],
   providers: [AppService],
 })

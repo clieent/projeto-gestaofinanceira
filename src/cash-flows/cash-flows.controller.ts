@@ -23,6 +23,7 @@ export class CashFlowsController {
         @Body() createCashFlowDto: CreateCashFlowDto,
         @Res() res: Response
     ) {
+        console.log(createCashFlowDto)
         const { status, data } = await this.cashFlowsService.create(
             createCashFlowDto
         )
@@ -42,7 +43,6 @@ export class CashFlowsController {
 
     @Patch(':id')
     update(
-        @Param('id') id: string,
         @Body() updateCashFlowDto: UpdateCashFlowDto
     ) {
         return this.cashFlowsService.update(updateCashFlowDto)

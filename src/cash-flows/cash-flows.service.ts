@@ -12,27 +12,74 @@ export class CashFlowsService {
         @InjectModel('cashFlows') private readonly cashFlows: Model<ICashFlow>
     ) {}
     async create(createCashFlowDto: CreateCashFlowDto) {
-        const cashFlow = await this.cashFlows
-            .create(createCashFlowDto)
-            .then((cashFlow) => {
-                return {
-                    status: HttpStatus.CREATED,
-                    data: cashFlow,
+        const { installment, dueDate, ...rest } = createCashFlowDto
+
+        let cashFlows = []
+
+        const intervalMonths = 1
+        let day = parseInt(dueDate.split('/')[2])
+        const month = parseInt(dueDate.split('/')[1])
+        const year = parseInt(dueDate.split('/')[0])
+
+        //if (installment) {
+        for (let i = 0; i < installment; i++) {
+            let changeMonth = new Date(`${day} ${month} ${year}`)
+            changeMonth.setMonth(changeMonth.getMonth() + i * intervalMonths)
+
+            /* if(day == 28) {
+                const lastDay = new Date(year, month + 1, 0)
+                day = lastDay.getDay()
+            } */
+
+            const installmentDto = {
+                ...rest,
+                value: parseFloat(createCashFlowDto.value) / installment,
+                dueDate: `${changeMonth.getDate() < 9
+                    ? '0' + (changeMonth.getDate())
+                    :
+                    changeMonth.getDate()}/${
+                    changeMonth.getMonth() < 9
+                        ? '0' + (changeMonth.getMonth() + 1)
+                        : changeMonth.getMonth() + 1
+                }/${changeMonth.getFullYear()}`,
+            }
+
+            cashFlows.push(installmentDto)
+            console.log(changeMonth)
+        }
+        console.log(installment)
+        //}
+        //if(!installment) {
+        const data = await this.cashFlows
+            .insertMany(cashFlows)
+            .then((cashFlows) => {
+                if (cashFlows) {
+                    return {
+                        status: 200,
+                        data: cashFlows,
+                    }
                 }
-            })
-            .catch(() => {
                 return {
-                    status: HttpStatus.BAD_GATEWAY,
+                    status: 400,
                     data: null,
                 }
             })
-        return cashFlow
+            .catch((error) => {
+                console.log(error)
+                return {
+                    status: 400,
+                    data: null,
+                }
+            })
+        return data
+        //}
     }
 
     async findAll(user_id: string) {
         return await this.cashFlows
             .find({ user_id })
             .populate('category_id', { title: true })
+            .populate('banks_id', { title: true })
             .exec()
             .then((data) => {
                 return {
@@ -54,23 +101,25 @@ export class CashFlowsService {
 
     async update(updateCashFlowDto: UpdateCashFlowDto) {
         const cashFlows = await this.cashFlows
-            .updateMany({_id: { $in: updateCashFlowDto}}, { $set: { paid: true }})
+            .updateMany(
+                { _id: { $in: updateCashFlowDto } },
+                { $set: { paid: true } }
+            )
             .then((cashFlows) => {
                 return {
                     data: cashFlows,
                     status: HttpStatus.OK,
                 }
-            }).catch((error) => {
+            })
+            .catch((error) => {
                 console.log(error)
                 return {
                     status: HttpStatus.BAD_REQUEST,
                     data: null,
                 }
             })
-            return cashFlows
-        }
-
-
+        return cashFlows
+    }
 
     remove(id: string) {
         return this.cashFlows
@@ -88,4 +137,7 @@ export class CashFlowsService {
                 }
             })
     }
+}
+function then(arg0: (cashFlow: any) => { status: HttpStatus; data: any }) {
+    throw new Error('Function not implemented.')
 }
