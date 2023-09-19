@@ -30,7 +30,20 @@ export class UsersService {
     }
 
     async findOne(id: string) {
-        return await this.users.findById(id).exec()
+        const user = await this.users.findById(id).then((user) => {
+            return {
+                status: 200,
+                data: {user}
+            }
+        })
+        .catch((error) => {
+            console.log(error)
+            return {
+                status: 404,
+                data: null,
+            }
+        })
+        return user
     }
 
     async findOneByEmail(email: string) {
@@ -53,7 +66,21 @@ export class UsersService {
     }
 
     async update(id: string, updateUserDto) {
-        await this.users.findByIdAndUpdate(id, updateUserDto).exec()
+        const user = await this.users.findByIdAndUpdate(id, updateUserDto).then((user) => {
+            return {
+                status: 200,
+                data: {user}
+            }
+        })
+        .catch((error) => {
+            console.log(error)
+            return {
+                status: 404,
+                data: null,
+            }
+        })
+        console.log(user)
+        return user
     }
 
     async remove(id: string) {

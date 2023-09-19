@@ -1,7 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose'
 import { Date, Document } from 'mongoose'
 
-export type IUser = User & Document
+export type IUsers = User & Document
 
 @Schema({ timestamps: true, collection: 'users' })
 export class User {
