@@ -22,7 +22,10 @@ export class User {
 
     token: string
 
-    @Prop({ defult: null, type: Date })
+    @Prop({default: null })
+    image: string
+
+    @Prop({ default: null, type: Date })
     deleted_at
 }
 

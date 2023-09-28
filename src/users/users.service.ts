@@ -83,6 +83,40 @@ export class UsersService {
         return user
     }
 
+    convertImageToBase64(file: File) {
+        return new Promise((resolve, reject) => {
+            const fileReader = new FileReader()
+            fileReader.readAsDataURL(file)
+            fileReader.onload = () => {
+                resolve(fileReader.result)
+            }
+            fileReader.onerror = (error) => {
+                reject(error)
+            }
+        })
+    }
+
+    async updateAvatar(id: string, image) {
+        const imageName = image.filename
+        //const filePath = await fs.writeFile("uploads/"+imageName, image.buffer)
+        console.log()
+        const user = await this.users.findByIdAndUpdate(id, {image: imageName}).then((user) => {
+            return {
+                status: 200,
+                data: {user}
+            }
+        })
+        .catch((error) => {
+            console.log(error)
+            return {
+                status: 404,
+                data: null,
+            }
+        })
+        console.log(user)
+        return user
+    }
+
     async remove(id: string) {
         await this.users.findByIdAndRemove(id)
     }
