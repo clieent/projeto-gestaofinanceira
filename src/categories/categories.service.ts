@@ -17,6 +17,7 @@ export class CategoriesService {
                 data:categories
             }
         }).catch((error)=>{
+            console.log(error)
             return{
                 status: HttpStatus.BAD_GATEWAY,
                 data: error,
@@ -35,6 +36,7 @@ export class CategoriesService {
                 data,
             }
         }).catch((error)=>{
+            console.log(error)
             return{
                 status: HttpStatus.NOT_FOUND,
                 data: error,
@@ -47,7 +49,6 @@ export class CategoriesService {
     }
 
     async update(id: string, updateCategoryDto: UpdateCategoryDto) {
-        console.log(updateCategoryDto)
         const category = await this.categories.findByIdAndUpdate(id, updateCategoryDto, {new: true}).then((category) => {
             return {
                 data: category,
@@ -70,6 +71,7 @@ export class CategoriesService {
                 data,
             }
         }).catch((error)=> {
+            console.log(error)
             return {
                 status: HttpStatus.UNPROCESSABLE_ENTITY,
                 data: error,

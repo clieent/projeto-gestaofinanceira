@@ -9,6 +9,8 @@ async function bootstrap() {
         cors: true,
     })
     app.useStaticAssets(path.join(__dirname, '../uploads'))
+    app.set('templates', './src/emails/templates/layouts')
+    app.set('view engine', 'ejs')
     await app.listen(process.env.APP_PORT || 3000)
 }
 bootstrap()

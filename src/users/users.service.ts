@@ -18,7 +18,6 @@ export class UsersService {
             cpf: createUserDto?.cpf ?? '',
             password: passwordCrypto ?? '',
         })
-        console.log(createUserDto)
         if (!user) {
             return 'Erro ao criar o usuário!'
         }
@@ -30,19 +29,21 @@ export class UsersService {
     }
 
     async findOne(id: string) {
-        const user = await this.users.findById(id).then((user) => {
-            return {
-                status: 200,
-                data: {user}
-            }
-        })
-        .catch((error) => {
-            console.log(error)
-            return {
-                status: 404,
-                data: null,
-            }
-        })
+        const user = await this.users
+            .findById(id)
+            .then((user) => {
+                return {
+                    status: 200,
+                    data: { user },
+                }
+            })
+            .catch((error) => {
+                console.log(error)
+                return {
+                    status: 404,
+                    data: null,
+                }
+            })
         return user
     }
 
@@ -65,20 +66,42 @@ export class UsersService {
         return user.data
     }
 
+    async updatePassword(email: string, updateUserDto) {
+        const passwordCrypto = await hash(updateUserDto.password, 8)
+        const user = await this.users
+            .findOneAndUpdate({ email }, { password: passwordCrypto })
+            .then((data) => {
+                return {
+                    status: 200,
+                    data,
+                }
+            })
+            .catch((error) => {
+                console.log(error)
+                return {
+                    status: 404,
+                    data: null,
+                }
+            })
+        return user.data
+    }
+
     async update(id: string, updateUserDto) {
-        const user = await this.users.findByIdAndUpdate(id, updateUserDto).then((user) => {
-            return {
-                status: 200,
-                data: {user}
-            }
-        })
-        .catch((error) => {
-            console.log(error)
-            return {
-                status: 404,
-                data: null,
-            }
-        })
+        const user = await this.users
+            .findByIdAndUpdate(id, updateUserDto)
+            .then((user) => {
+                return {
+                    status: 200,
+                    data: { user },
+                }
+            })
+            .catch((error) => {
+                console.log(error)
+                return {
+                    status: 404,
+                    data: null,
+                }
+            })
         console.log(user)
         return user
     }
@@ -98,21 +121,22 @@ export class UsersService {
 
     async updateAvatar(id: string, image) {
         const imageName = image.filename
-        //const filePath = await fs.writeFile("uploads/"+imageName, image.buffer)
         console.log()
-        const user = await this.users.findByIdAndUpdate(id, {image: imageName}).then((user) => {
-            return {
-                status: 200,
-                data: {user}
-            }
-        })
-        .catch((error) => {
-            console.log(error)
-            return {
-                status: 404,
-                data: null,
-            }
-        })
+        const user = await this.users
+            .findByIdAndUpdate(id, { image: imageName })
+            .then((user) => {
+                return {
+                    status: 200,
+                    data: { user },
+                }
+            })
+            .catch((error) => {
+                console.log(error)
+                return {
+                    status: 404,
+                    data: null,
+                }
+            })
         console.log(user)
         return user
     }

@@ -88,6 +88,7 @@ export class CashFlowsService {
                 }
             })
             .catch((error) => {
+                console.log(error)
                 return {
                     status: HttpStatus.NOT_FOUND,
                     data: error,
@@ -123,15 +124,16 @@ export class CashFlowsService {
 
     remove(id: string) {
         return this.cashFlows
-            .findByIdAndDelete(id)
-            .then((data) => {
-                return {
-                    status: HttpStatus.OK,
-                    data,
-                }
-            })
-            .catch((error) => {
-                return {
+        .findByIdAndDelete(id)
+        .then((data) => {
+            return {
+                status: HttpStatus.OK,
+                data,
+            }
+        })
+        .catch((error) => {
+            console.log(error)
+            return {
                     status: HttpStatus.UNPROCESSABLE_ENTITY,
                     data: error,
                 }

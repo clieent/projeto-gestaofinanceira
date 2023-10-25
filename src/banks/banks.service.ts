@@ -42,6 +42,7 @@ export class BanksService {
                 }
             })
             .catch((error) => {
+                console.log(error)
                 return {
                     status: HttpStatus.NOT_FOUND,
                     data: error,
@@ -82,6 +83,7 @@ export class BanksService {
                 }
             })
             .catch((error) => {
+                console.log(error)
                 return {
                     status: HttpStatus.UNPROCESSABLE_ENTITY,
                     data: error,
